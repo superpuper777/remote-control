@@ -1,11 +1,17 @@
 import { WebSocketServer, createWebSocketStream } from "ws";
-import { mouse } from "@nut-tree/nut-js";
+import {  movementCommand } from './../commands/index';
 
 export const startWebsocket = (HTTP_PORT: number) => {
   const PORT = HTTP_PORT || 8080;
   const wss = new WebSocketServer({ port: PORT });
   wss.on("connection", (ws, req) => {
     console.log(`Client connected`);
+    const duplex = createWebSocketStream(ws, { encoding: 'utf8', decodeStrings: false });
+    duplex.on('data', async (data) => {
+            const command = movementCommand(data.toString());
+            console.log(`${command}`);
+            duplex.write(`${command}`);
+    });
   });
 
   process.on("SIGINT", () => {
