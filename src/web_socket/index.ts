@@ -1,5 +1,5 @@
 import { WebSocketServer, createWebSocketStream } from "ws";
-import {  movementCommand } from './../commands/index';
+import { movementCommand } from './../controllers';
 
 export const startWebsocket = (HTTP_PORT: number) => {
   const PORT = HTTP_PORT || 8080;
